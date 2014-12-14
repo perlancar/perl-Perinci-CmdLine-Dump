@@ -1,0 +1,7 @@
+Revision history for Perinci-CmdLine-Base-Patch-DumpAndExit
+
+0.01    2014-12-14 (PERLANCAR) (unreleased)
+
+        - First release, split from Pod-Weaver-Plugin-Rinci and renamed from
+          ::DumpOnRun to ::DumpAndExit.
+
