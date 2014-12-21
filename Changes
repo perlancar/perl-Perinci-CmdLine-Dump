@@ -5,6 +5,11 @@ Revision history for Perinci-CmdLine-Dump
         - Rename dist from Perinci-CmdLine-Base-Patch-DumpAndExit to
           Perinci-CmdLine-Dump.
 
+        - [Refactoring] Add/extract function:
+          Perinci::CmdLine::Dump::dump_perinci_cmdline_script() that can be
+          reused by App::shcompgen and Pod::Weaver::Plugin::Rinci (and
+          potentially others).
+
 
 0.01    2014-12-14 (PERLANCAR)
 
