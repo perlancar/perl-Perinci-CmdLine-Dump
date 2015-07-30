@@ -64,7 +64,7 @@ sub dump_perinci_cmdline_script {
     my $detres = Perinci::CmdLine::Util::detect_perinci_cmdline_script(
         filename => $filename);
     return $detres if $detres->[0] != 200;
-    return [412, "File '$filename' is not script using Perinci::CmdLine"]
+    return [412, "File '$filename' is not script using Perinci::CmdLine (".
         $detres->[3]{'func.reason'}.")"] unless $detres->[2];
 
     my $libs = $args{libs} // [];
