@@ -1,5 +1,13 @@
 Revision history for Perinci-CmdLine-Dump
 
+0.04    2015-07-30 (PERLANCAR)
+
+	- Support dumping Perinci::CmdLine::Inline script (as if it were
+	  Perinci::CmdLine::Lite script).
+
+	- Include detect result as extra result.
+
+
 0.03    2015-07-30 (PERLANCAR)
 
 	- [ux] Include detection reason in error message.
