@@ -100,7 +100,9 @@ sub dump_perinci_cmdline_script {
                         "stdout=<<$stdout>>, stderr=<<$stderr>>"];
     }
 
-    my $res = [200, "OK", $cli];
+    my $res = [200, "OK", $cli, {
+        'func.detect_res' => $detres,
+    }];
 
     # XXX handle embedded but not in /main?
     if ($cli->{url} =~ m!^(pl:)?/main/!) {
