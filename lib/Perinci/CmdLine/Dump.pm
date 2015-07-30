@@ -72,7 +72,8 @@ sub dump_perinci_cmdline_script {
         'func.detect_res' => $detres,
     }];
 
-    # dump pericmd-inline script as if it were pericmd-lite script
+    # dump pericmd-inline script as if it were pericmd-lite script, but strips
+    # the extra stuffs not yet supported by pericmd-inline
     if ($detres->[3]{'func.is_inline'}) {
         my $attrs = $detres->[3]{'func.pericmd_inline_attrs'};
         if (!$attrs) {
@@ -80,7 +81,12 @@ sub dump_perinci_cmdline_script {
                         "can't dump its attributes"];
         }
         require Perinci::CmdLine::Lite;
-        $res->[2] = Perinci::CmdLine::Lite->new(%$attrs);
+        $res->[2] = Perinci::CmdLine::Lite->new(
+            %$attrs,
+            # unsupported stuffs
+            read_config => 0,
+            read_env => 0,
+        );
         goto RETURN_RES;
     }
 
