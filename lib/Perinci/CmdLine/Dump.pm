@@ -68,6 +68,22 @@ sub dump_perinci_cmdline_script {
     return [412, "File '$filename' is not script using Perinci::CmdLine (".
         $detres->[3]{'func.reason'}.")"] unless $detres->[2];
 
+    my $res = [200, "OK", undef, {
+        'func.detect_res' => $detres,
+    }];
+
+    # dump pericmd-inline script as if it were pericmd-lite script
+    if ($detres->[3]{'func.is_inline'}) {
+        my $attrs = $detres->[3]{'func.pericmd_inline_attrs'};
+        if (!$attrs) {
+            return [412, "Script is Perinci::CmdLine::Inline script, but ".
+                        "can't dump its attributes"];
+        }
+        require Perinci::CmdLine::Lite;
+        $res->[2] = Perinci::CmdLine::Lite->new(%$attrs);
+        goto RETURN_RES;
+    }
+
     my $libs = $args{libs} // [];
 
     my $tag = UUID::Random::generate();
@@ -100,9 +116,7 @@ sub dump_perinci_cmdline_script {
                         "stdout=<<$stdout>>, stderr=<<$stderr>>"];
     }
 
-    my $res = [200, "OK", $cli, {
-        'func.detect_res' => $detres,
-    }];
+    $res->[2] = $cli;
 
     # XXX handle embedded but not in /main?
     if ($cli->{url} =~ m!^(pl:)?/main/!) {
@@ -123,6 +137,7 @@ do "$filename";
         $res->[3]{'func.meta'} = \%main::SPEC;
     }
 
+  RETURN_RES:
     $res;
 }
 
