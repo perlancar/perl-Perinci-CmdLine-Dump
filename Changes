@@ -1,5 +1,13 @@
 Revision history for Perinci-CmdLine-Dump
 
+0.05    2015-07-30 (PERLANCAR)
+
+	- When dumping Perinci::CmdLine::Inline script as
+	  Perinci::CmdLine::Lite script, emulate by turning off features
+	  not yet supported by pericmd-inline (currently: read_config=>0,
+	  read_env=>0).
+
+
 0.04    2015-07-30 (PERLANCAR)
 
 	- Support dumping Perinci::CmdLine::Inline script (as if it were
