@@ -43,8 +43,9 @@ _
     args => {
         filename => {
             summary => 'Path to the script',
-            req => 1,
             schema => 'str*',
+            req => 1,
+            pos => 0,
         },
         libs => {
             summary => 'Libraries to unshift to @INC when running script',
