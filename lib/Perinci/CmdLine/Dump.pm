@@ -55,6 +55,10 @@ _
             schema  => ['array*' => of => 'str*'],
             cmdline_aliases => {I=>{}},
         },
+        skip_detect => {
+            schema => ['bool', is=>1],
+            cmdline_aliases => {D=>{}},
+        },
     },
 };
 sub dump_perinci_cmdline_script {
@@ -66,11 +70,16 @@ sub dump_perinci_cmdline_script {
     my %args = @_;
 
     my $filename = $args{filename} or return [400, "Please specify filename"];
-    my $detres = Perinci::CmdLine::Util::detect_perinci_cmdline_script(
-        filename => $filename);
-    return $detres if $detres->[0] != 200;
-    return [412, "File '$filename' is not script using Perinci::CmdLine (".
-        $detres->[3]{'func.reason'}.")"] unless $detres->[2];
+    my $detres;
+    if ($args{skip_detect}) {
+        $detres = [200, "OK (skip_detect)", 1, {"func.reason" => "skip detect, forced"}];
+    } else {
+        $detres = Perinci::CmdLine::Util::detect_perinci_cmdline_script(
+            filename => $filename);
+        return $detres if $detres->[0] != 200;
+        return [412, "File '$filename' is not script using Perinci::CmdLine (".
+                    $detres->[3]{'func.reason'}.")"] unless $detres->[2];
+    }
 
     my $res = [200, "OK", undef, {
         'func.detect_res' => $detres,

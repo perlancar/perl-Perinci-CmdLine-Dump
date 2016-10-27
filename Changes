@@ -1,5 +1,10 @@
 Revision history for Perinci-CmdLine-Dump
 
+0.06    2016-10-27 (PERLANCAR)
+
+        - Add skip_detect option.
+
+
 0.05    2015-07-30 (PERLANCAR)
 
 	- When dumping Perinci::CmdLine::Inline script as
