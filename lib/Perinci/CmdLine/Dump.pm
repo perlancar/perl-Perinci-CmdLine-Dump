@@ -3,16 +3,19 @@ package Perinci::CmdLine::Dump;
 # DATE
 # VERSION
 
-use 5.010;
+use 5.010001;
 use strict;
 use warnings;
 
 use Exporter qw(import);
-our @EXPORT_OK = qw(dump_perinci_cmdline_script);
+our @EXPORT_OK = qw(
+                       dump_percmd_script
+                       dump_perinci_cmdline_script
+               );
 
 our %SPEC;
 
-$SPEC{dump_perinci_cmdline_script} = {
+$SPEC{dump_pericmd_script} = {
     v => 1.1,
     summary => 'Run a Perinci::CmdLine-based script but only to '.
         'dump the object',
@@ -61,7 +64,7 @@ _
         },
     },
 };
-sub dump_perinci_cmdline_script {
+sub dump_pericmd_script {
     require Capture::Tiny;
     require Perinci::CmdLine::Util;
     require Scalar::Util;
@@ -160,5 +163,13 @@ do "$filename";
     $res;
 }
 
+{
+    no strict 'refs';
+    # old name, deprecated
+    *dump_perinci_cmdline_script = \&dump_pericmd_script;
+}
+
 1;
 # ABSTRACT:
+
+=for Pod::Coverage ^(dump_perinci_cmdline_script)$
