@@ -1,3 +1,10 @@
+0.07    2017-01-07 (PERLANCAR)
+
+	- [Incompatible change] Rename function dump_perinci_cmdline_script
+	  to dump_pericmd_script, we standardize on the shorter name (old
+	  name is still around but deprecated and undocumented).
+
+
 0.06    2016-10-27 (PERLANCAR)
 
         - Add skip_detect option.

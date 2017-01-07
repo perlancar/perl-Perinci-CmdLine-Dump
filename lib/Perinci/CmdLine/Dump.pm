@@ -9,7 +9,7 @@ use warnings;
 
 use Exporter qw(import);
 our @EXPORT_OK = qw(
-                       dump_percmd_script
+                       dump_pericmd_script
                        dump_perinci_cmdline_script
                );
 
