@@ -99,9 +99,6 @@ sub dump_pericmd_script {
         require Perinci::CmdLine::Lite;
         $res->[2] = Perinci::CmdLine::Lite->new(
             %$attrs,
-            # unsupported stuffs
-            read_config => 0,
-            read_env => 0,
         );
         goto RETURN_RES;
     }
