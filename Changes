@@ -1,3 +1,9 @@
+0.08    2017-01-13 (PERLANCAR)
+
+	- Adjust to Perinci::CmdLine::Inline 0.45+ (read_config & read_env
+	  now supported).
+
+
 0.07    2017-01-07 (PERLANCAR)
 
 	- [Incompatible change] Rename function dump_perinci_cmdline_script
