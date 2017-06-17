@@ -106,14 +106,11 @@ sub dump_pericmd_script {
     my $libs = $args{libs} // [];
 
     my $tag = UUID::Random::generate();
-    my @cmd = (
-        $^X, (map {"-I$_"} @$libs),
-        "-MPerinci::CmdLine::Base::Patch::DumpAndExit=-tag,$tag",
-        $filename,
-        "--version",
-    );
     my ($stdout, $stderr, $exit) = Capture::Tiny::capture(
-        sub { system @cmd },
+        sub {
+            local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
+            system $^X, $filename;
+        },
     );
 
     my $cli;
@@ -146,11 +143,8 @@ sub dump_pericmd_script {
         local @INC = (@$libs, @INC);
         (undef, undef, undef) = Capture::Tiny::capture(
             sub {
-                eval q{
-package main;
-use Perinci::CmdLine::Base::Patch::DumpAndExit -tag=>'$tag',-exit_method=>'die';
-do "$filename";
-};
+                local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
+                do $filename;
             }
         );
         $res->[3]{'func.meta'} = \%main::SPEC;
