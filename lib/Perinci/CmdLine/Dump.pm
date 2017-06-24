@@ -62,6 +62,20 @@ _
             schema => ['bool', is=>1],
             cmdline_aliases => {D=>{}},
         },
+        method => {
+            schema => ['str*', in=>['patch', 'self-dump']],
+            description => <<'_',
+
+The `patch` method is using monkey-patching to replace run() with a routine that
+dumps the object and exit. This has a disadvantage of exiting too early, for
+example some attributes like `common_opts` is filled during run(). Another
+method is `self-dump` that requires <pm:Perinci::CmdLine::Lite> version 1.73 or
+later.
+
+The default is to use `self-dump`, but `patch` for /main/.
+
+_
+        },
     },
 };
 sub dump_pericmd_script {
@@ -108,8 +122,18 @@ sub dump_pericmd_script {
     my $tag = UUID::Random::generate();
     my ($stdout, $stderr, $exit) = Capture::Tiny::capture(
         sub {
-            local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
-            system $^X, $filename;
+            my $meth = $args{method} // 'self-dump';
+            if ($meth eq 'self-dump') {
+                local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
+                system $^X, $filename;
+            } else {
+                my @cmd = (
+                    $^X, (map {"-I$_"} @$libs),
+                    "-MPerinci::CmdLine::Base::Patch::DumpAndExit=-tag,$tag",
+                    $filename, "--version",
+                );
+                system @cmd;
+            }
         },
     );
 
@@ -143,9 +167,18 @@ sub dump_pericmd_script {
         local @INC = (@$libs, @INC);
         (undef, undef, undef) = Capture::Tiny::capture(
             sub {
-                local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
-                do $filename;
-            }
+                my $meth = $args{method} // 'patch';
+                if ($meth eq 'self-dump') {
+                    local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
+                    do $filename;
+                } else {
+                    eval q{
+package main;
+use Perinci::CmdLine::Base::Patch::DumpAndExit -tag=>'$tag',-exit_method=>'die';
+do "$filename";
+};
+                }
+            },
         );
         $res->[3]{'func.meta'} = \%main::SPEC;
     }
@@ -156,6 +189,7 @@ sub dump_pericmd_script {
 
 {
     no strict 'refs';
+    no warnings 'once';
     # old name, deprecated
     *dump_perinci_cmdline_script = \&dump_pericmd_script;
 }
