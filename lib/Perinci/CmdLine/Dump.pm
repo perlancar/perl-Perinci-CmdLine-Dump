@@ -1,13 +1,16 @@
 package Perinci::CmdLine::Dump;
 
-# DATE
-# VERSION
-
 use 5.010001;
 use strict;
 use warnings;
 
 use Exporter qw(import);
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
+
 our @EXPORT_OK = qw(
                        dump_pericmd_script
                        dump_perinci_cmdline_script

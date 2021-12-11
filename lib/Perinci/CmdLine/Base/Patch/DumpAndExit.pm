@@ -1,8 +1,5 @@
 package Perinci::CmdLine::Base::Patch::DumpAndExit;
 
-# DATE
-# VERSION
-
 use 5.010001;
 use strict;
 no warnings;
@@ -10,6 +7,11 @@ no warnings;
 use Data::Dump;
 use Module::Patch qw();
 use base qw(Module::Patch);
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
 our %config;
 
