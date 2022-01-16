@@ -127,7 +127,7 @@ sub dump_pericmd_script {
         sub {
             my $meth = $args{method} // 'self-dump';
             if ($meth eq 'self-dump') {
-                local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
+                local $ENV{PERINCI_CMDLINE_DUMP_OBJECT} = $tag;
                 system $^X, (map {"-I$_"} @$libs), $filename;
             } else {
                 my @cmd = (
