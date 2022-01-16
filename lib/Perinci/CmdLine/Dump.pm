@@ -142,7 +142,7 @@ sub dump_pericmd_script {
 
     my $cli;
     if ($stdout =~ /^# BEGIN DUMP $tag\s+(.*)^# END DUMP $tag/ms) {
-        $cli = eval $1;
+        $cli = eval $1; ## no critic: BuiltinFunctions::ProhibitStringyEval
         if ($@) {
             return [500, "Script '$filename' detected as using ".
                         "Perinci::CmdLine, but error in eval-ing captured ".
@@ -175,7 +175,8 @@ sub dump_pericmd_script {
                     local $ENV{PERINCI_CMDLINE_DUMP} = $tag;
                     do $filename;
                 } else {
-                    eval q{
+                    eval ## no critic: BuiltinFunctions::ProhibitStringyEval
+                        q{
 package main;
 use Perinci::CmdLine::Base::Patch::DumpAndExit -tag=>'$tag',-exit_method=>'die';
 do "$filename";
@@ -191,7 +192,7 @@ do "$filename";
 }
 
 {
-    no strict 'refs';
+    no strict 'refs'; ## no critic: TestingAndDebugging::ProhibitNoStrict
     no warnings 'once';
     # old name, deprecated
     *dump_perinci_cmdline_script = \&dump_pericmd_script;
